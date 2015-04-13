@@ -122,23 +122,25 @@ var TodoBox = React.createClass({
     }
   },
   showInput: function () {
+    document.getElementById('inputbox').focus();
     this.props.showInput.call(this, null);
-    document.getElementById('inputbox').click();
   },
   render: function () {
+    // use "a" tag for autofocus in mobile devices..
     return (
       <div>
         <div className={this.props.hidden === true ? 'inputWrapper hidden' : 'inputWrapper'}>
           <input className={'inputbox'}
+                 autofocus
                  id={'inputbox'}
                  placeholder={'请填写您的待办事项，按换行或回车结束'}
                  onBlur={this.add}
                  onKeyDown={this.add} />
         </div>
-        <div onClick={this.showInput}
-             className={this.props.hidden === true ? 'addTips shown' : 'addTips'}>
-          点击添加待办事项
-        </div>
+        <a onClick={this.showInput}
+           className={this.props.hidden === true ? 'addTips shown' : 'addTips'}>
+          + 点击添加待办事项
+        </a>
       </div>
     );
   }
