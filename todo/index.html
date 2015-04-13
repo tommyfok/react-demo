@@ -9,7 +9,6 @@
         <h1>Tommy's Todo</h1>
     </header>
     <section id="todo-list"></section>
-    <section id="todo-box"></section>
     <footer>
         Thanks all and React.
     </footer>
@@ -26,7 +25,7 @@ var TodoItem = React.createClass({
     // 参考http://facebook.github.io/react/docs/events.html
     return (
       <li style={{cursor:'pointer'}}>
-        <a onDoubleClick={this.remove}>{this.props.content}</a>
+        <a onClick={this.remove}>{this.props.content}</a>
       </li>
     );
   }
