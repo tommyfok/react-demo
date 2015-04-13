@@ -8,7 +8,7 @@
 <body>
     <header>Tommy's Todo</h1></header>
     <section id="todo-list"></section>
-    <footer>Thanks all and React.</footer>
+    <footer>Tommy's Todo List, powered by React.</footer>
 </body>
 <script src="js/react.js"></script>
 <script src="js/JSXTransformer.js"></script>
@@ -29,7 +29,7 @@ var TodoItem = React.createClass({
     return (
       <li style={{cursor:'pointer'}}>
         <a>{this.props.content}</a>
-        <span className={'del'} onTouchEnd={this.remove} onClick={this.remove}>x</span>
+        <span className={'del'} onTouchEnd={this.remove} onClick={this.remove}>删</span>
       </li>
     );
   }

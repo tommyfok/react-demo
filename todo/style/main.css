@@ -18,7 +18,7 @@ header {
 }
 
 #todo-list {
-    padding-bottom: 25px;
+    padding-bottom: 30px;
 }
 
 #todo-list ul {
@@ -47,7 +47,7 @@ header {
     background: #00d8ff;
     color: #fff;
     line-height: 30px;
-    font-size: 20px;
+    font-size: 12px;
     text-align: center;
     width: 30px;
     height: 30px;
@@ -81,10 +81,11 @@ footer {
     background: #c05b4d;
     color: #fff;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
-    line-height: 25px;
+    line-height: 20px;
+    padding: 5px 0;
 }
