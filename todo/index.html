@@ -2,16 +2,13 @@
 <html>
 <head>
     <title>Tommy's Todo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-    <header>
-        <h1>Tommy's Todo</h1>
-    </header>
+    <header>Tommy's Todo</h1></header>
     <section id="todo-list"></section>
-    <footer>
-        Thanks all and React.
-    </footer>
+    <footer>Thanks all and React.</footer>
 </body>
 <script src="js/react.js"></script>
 <script src="js/JSXTransformer.js"></script>
@@ -25,7 +22,8 @@ var TodoItem = React.createClass({
     // 参考http://facebook.github.io/react/docs/events.html
     return (
       <li style={{cursor:'pointer'}}>
-        <a onClick={this.remove}>{this.props.content}</a>
+        <a>{this.props.content}</a>
+        <span className={'del'} onClick={this.remove}>x</span>
       </li>
     );
   }
@@ -68,7 +66,7 @@ var TodoList = React.createClass({
     if (this.state.data.length > 0) {
       result = <ul>{todoNodes}</ul>;
     } else {
-      result = <p>您没有待办事项</p>;
+      result = <ul><li style={{textAlign: 'center'}}><a>您没有待办事项</a></li></ul>;
     }
     return (
       <div>
@@ -84,14 +82,14 @@ var TodoBox = React.createClass({
     var e = window.event;
     // check if "enter" pressed
     if (e.keyCode == 13 || e.which == 13) {
-      var text = this.getDOMNode();
+      var text = this.getDOMNode().childNodes[0];
       this.props.add.call(this, text.value);
       text.value = '';
     }
   },
   render: function () {
     return (
-      <input onKeyDown={this.add} />
+      <div className={'inputWrapper'}><input className={'inputbox'} onKeyDown={this.add} /></div>
     );
   }
 });

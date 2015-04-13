@@ -1,0 +1,89 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #00d8ff;
+    border-bottom: 1px solid #00b8df;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 49px;
+    line-height: 49px;
+    font-size: 24px;
+}
+
+#todo-list {
+    padding-bottom: 25px;
+}
+
+#todo-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#todo-list li {
+    padding: 0 10px;
+    background: #fafafa;
+    color: #c05b4d;
+    position: relative;
+    font-size: 18px;
+    line-height: 40px;
+}
+
+#todo-list li:nth-child(2n) {
+    background: #fff;
+}
+
+#todo-list li .del {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: #00d8ff;
+    color: #fff;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    opacity: .6;
+}
+
+.inputWrapper {
+    padding: 10px;
+}
+
+.inputbox {
+    display: block;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 12px;
+    border-radius: 3px;
+    border: 1px solid #aaa;
+}
+
+.inputbox:focus {
+    outline: none;
+    border-color: #c05b4d;
+}
+
+footer {
+    background: #c05b4d;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    line-height: 25px;
+}
