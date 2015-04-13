@@ -19,7 +19,7 @@ var TodoItem = React.createClass({
   },
   remove: function () {
     if (this.state.isRemoved === false) {
-      this.props.remove.call(this, this.props.index);
+      this.props.remove.call(this, this.props.content);
       this.state.isRemoved = true;
     }
   },
@@ -29,7 +29,7 @@ var TodoItem = React.createClass({
     return (
       <li style={{cursor:'pointer'}}>
         <a>{this.props.content}</a>
-        <span className={'del'} onTouchEnd={this.remove} onClick={this.remove}>删</span>
+        <a className={'del'} onTouchEnd={this.remove} onClick={this.remove}>删</a>
       </li>
     );
   }
@@ -47,32 +47,34 @@ var TodoList = React.createClass({
       data: data
     };
   },
-  add: function (item) {
-    this.state.data.push(item);
-    localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
-    this.setState({data: this.state.data});
+  add: function (content) {
+    if (this.state.data.indexOf(content) === -1) {
+      this.state.data.push(content);
+      localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
+      this.setState({data: this.state.data});
+    }
   },
-  remove: function (index) {
-    this.state.data.splice(index, 1);
+  remove: function (content) {
+    this.state.data.splice(this.state.data.indexOf(content), 1);
     localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
-    this.setState({data: this.state.data});
-  },
-  edit: function (index, content) {
-    this.state.data[index] = content;
     this.setState({data: this.state.data});
   },
   render: function() {
     var self = this;
-    var todoNodes = this.state.data.map(function (item, index) {
+    var todoNodes = this.state.data.map(function (item) {
       return (
-        <TodoItem content={item} remove={self.remove} index={index} />
+        <TodoItem content={item} remove={self.remove} />
       );
     });
     var result;
     if (this.state.data.length > 0) {
       result = <ul>{todoNodes}</ul>;
     } else {
-      result = <ul><li style={{textAlign: 'center'}}><a>您没有待办事项</a></li></ul>;
+      result = <ul>
+                 <li style={{textAlign: 'center'}}>
+                   <a>您没有待办事项</a>
+                 </li>
+               </ul>;
     }
     return (
       <div>
@@ -87,15 +89,22 @@ var TodoBox = React.createClass({
   add: function () {
     var e = window.event;
     // check if "enter" pressed
-    if (e.keyCode == 13 || e.which == 13) {
+    if (e.keyCode == 13 || e.which == 13 || e.type == 'blur') {
       var text = this.getDOMNode().childNodes[0];
-      this.props.add.call(this, text.value);
-      text.value = '';
+      if (text.value.length > 0) {
+        this.props.add.call(this, text.value);
+        text.value = '';
+      }
     }
   },
   render: function () {
     return (
-      <div className={'inputWrapper'}><input className={'inputbox'} onKeyDown={this.add} /></div>
+      <div className={'inputWrapper'}>
+        <input className={'inputbox'}
+               placeholder={'请填写您的待办事项，按换行或回车结束'}
+               onBlur={this.add}
+               onKeyDown={this.add} />
+      </div>
     );
   }
 });
