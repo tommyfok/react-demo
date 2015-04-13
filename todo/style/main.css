@@ -80,9 +80,10 @@ header {
     line-height: 60px;
     padding: 0 10px;
     text-align: center;
-    font-size: 20px;
-    background: #00d8ff;
-    color: #fff;
+    font-size: 18px;
+    background: #fafdff;
+    text-shadow: 0 0 3px #fff;
+    color: #00c8ef;
     -webkit-transition: -webkit-transform .3s ease-out;
     transition: transform .3s ease-out;
     -webkit-transform: scale(0);
