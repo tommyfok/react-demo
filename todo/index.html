@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tommy's Todo</title>
+    <title>My Todos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-    <header>Tommy's Todo</h1></header>
     <section id="todo-list"></section>
     <footer>Tommy's Todo List, powered by React.</footer>
 </body>
@@ -14,14 +13,8 @@
 <script src="js/JSXTransformer.js"></script>
 <script type="text/jsx">
 var TodoItem = React.createClass({
-  getInitialState: function () {
-    return {isRemoved: false};
-  },
   remove: function () {
-    if (this.state.isRemoved === false) {
-      this.props.remove.call(this, this.props.content);
-      this.state.isRemoved = true;
-    }
+    this.props.remove.call(this, this.props.index);
   },
   render: function () {
     // JSX中的Event名称和原生JS有所区别
@@ -29,7 +22,7 @@ var TodoItem = React.createClass({
     return (
       <li style={{cursor:'pointer'}}>
         <a>{this.props.content}</a>
-        <a className={'del'} onTouchEnd={this.remove} onClick={this.remove}>删</a>
+        <a className={'del'} onClick={this.remove}>删</a>
       </li>
     );
   }
@@ -49,23 +42,17 @@ var TodoList = React.createClass({
     };
   },
   add: function (content) {
-    if (this.state.data.indexOf(content) === -1) {
-      this.state.data.push(content);
-      localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
-      this.setState({
-        data: this.state.data,
-        hideInput: true
-      });
-    } else {
-      this.setState({hideInput: true});
-    }
-  },
-  remove: function (content) {
-    this.state.data.splice(this.state.data.indexOf(content), 1);
+    this.state.data.push(content);
     localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
     this.setState({
-      data: this.state.data,
-      hideInput: true
+      data: this.state.data
+    });
+  },
+  remove: function (index) {
+    this.state.data.splice(index, 1);
+    localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
+    this.setState({
+      data: this.state.data
     });
   },
   showInput: function () {
@@ -80,9 +67,12 @@ var TodoList = React.createClass({
   },
   render: function() {
     var self = this;
-    var todoNodes = this.state.data.map(function (item) {
+    var todoNodes = this.state.data.map(function (item, index) {
+      // 由于这里的上下文对象是state.data
+      // 而不是TodoList
+      // 所以要引用self
       return (
-        <TodoItem content={item} remove={self.remove} />
+        <TodoItem content={item} remove={self.remove} index={index} />
       );
     });
     var result;
@@ -131,7 +121,6 @@ var TodoBox = React.createClass({
       <div>
         <div className={this.props.hidden === true ? 'inputWrapper hidden' : 'inputWrapper'}>
           <input className={'inputbox'}
-                 autofocus
                  id={'inputbox'}
                  placeholder={'请填写您的待办事项，按换行或回车结束'}
                  onBlur={this.add}
