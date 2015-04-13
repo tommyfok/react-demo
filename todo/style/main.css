@@ -75,10 +75,6 @@ header {
 
 .addTips {
     display: block;
-    position: fixed;
-    bottom: 30px;
-    left: 0;
-    right: 0;
     height: 0;
     overflow: hidden;
     line-height: 60px;

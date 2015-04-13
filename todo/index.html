@@ -138,6 +138,7 @@ var TodoBox = React.createClass({
                  onKeyDown={this.add} />
         </div>
         <a onClick={this.showInput}
+           onTouchEnd={this.showInput}
            className={this.props.hidden === true ? 'addTips shown' : 'addTips'}>
           + 点击添加待办事项
         </a>
