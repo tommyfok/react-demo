@@ -44,20 +44,39 @@ var TodoList = React.createClass({
       data = [];
     }
     return {
-      data: data
+      data: data,
+      hideInput: true
     };
   },
   add: function (content) {
     if (this.state.data.indexOf(content) === -1) {
       this.state.data.push(content);
       localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
-      this.setState({data: this.state.data});
+      this.setState({
+        data: this.state.data,
+        hideInput: true
+      });
+    } else {
+      this.setState({hideInput: true});
     }
   },
   remove: function (content) {
     this.state.data.splice(this.state.data.indexOf(content), 1);
     localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
-    this.setState({data: this.state.data});
+    this.setState({
+      data: this.state.data,
+      hideInput: true
+    });
+  },
+  showInput: function () {
+    this.setState({
+      hideInput: false
+    });
+  },
+  hideInput: function () {
+    this.setState({
+      hideInput: true
+    });
   },
   render: function() {
     var self = this;
@@ -79,7 +98,10 @@ var TodoList = React.createClass({
     return (
       <div>
         {result}
-        <TodoBox add={this.add} />
+        <TodoBox add={this.add}
+                 hidden={this.state.hideInput}
+                 hideInput={this.hideInput}
+                 showInput={this.showInput} />
       </div>
     );
   }
@@ -90,20 +112,33 @@ var TodoBox = React.createClass({
     var e = window.event;
     // check if "enter" pressed
     if (e.keyCode == 13 || e.which == 13 || e.type == 'blur') {
-      var text = this.getDOMNode().childNodes[0];
+      var text = document.getElementById('inputbox');
       if (text.value.length > 0) {
         this.props.add.call(this, text.value);
         text.value = '';
+      } else {
+        this.props.hideInput.call(this, null);
       }
     }
   },
+  showInput: function () {
+    this.props.showInput.call(this, null);
+    document.getElementById('inputbox').click();
+  },
   render: function () {
     return (
-      <div className={'inputWrapper'}>
-        <input className={'inputbox'}
-               placeholder={'请填写您的待办事项，按换行或回车结束'}
-               onBlur={this.add}
-               onKeyDown={this.add} />
+      <div>
+        <div className={this.props.hidden === true ? 'inputWrapper hidden' : 'inputWrapper'}>
+          <input className={'inputbox'}
+                 id={'inputbox'}
+                 placeholder={'请填写您的待办事项，按换行或回车结束'}
+                 onBlur={this.add}
+                 onKeyDown={this.add} />
+        </div>
+        <div onClick={this.showInput}
+             className={this.props.hidden === true ? 'addTips shown' : 'addTips'}>
+          点击添加待办事项
+        </div>
       </div>
     );
   }
