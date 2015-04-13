@@ -19,6 +19,8 @@ header {
 
 #todo-list {
     padding-bottom: 30px;
+    margin: 0 auto;
+    max-width: 480px;
 }
 
 #todo-list ul {
