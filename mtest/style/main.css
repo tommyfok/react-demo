@@ -17,103 +17,53 @@ header {
     font-size: 24px;
 }
 
-#todo-list {
-    padding-bottom: 30px;
-    margin: 0 auto;
-    max-width: 480px;
+.options {
+    width: 300px;
+    height: 300px;
+    margin: 10px auto;
 }
 
-#todo-list ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-#todo-list li {
-    padding: 0 10px;
-    background: #fafafa;
-    color: #c05b4d;
+.option-item {
+    float: left;
+    width: 50%;
+    height: 50%;
+    box-sizing: border-box;
+    border: 1px solid #eee;
     position: relative;
-    font-size: 20px;
-    line-height: 50px;
 }
 
-#todo-list li:nth-child(2n) {
-    background: #fff;
+.option-item:active {
+    background: #369;
 }
 
-#todo-list li .del {
+.option-item:after {
+    content: "";
+    display: block;
     position: absolute;
+    top: 5px;
+    right: 74px;
+    width: 2px;
+    height: 140px;
+    background: #eee;
+    -webkit-transform: rotateZ(315deg);
+    transform: rotateZ(315deg);
+}
+
+.you,
+.computer {
+    position: absolute;
+    font-size: 32px;
+}
+
+.you {
+    left: 10px;
+    bottom: 10px;
+    color: #f60;
+}
+
+.computer {
     right: 10px;
     top: 10px;
-    background: #00d8ff;
-    color: #fff;
-    line-height: 30px;
-    font-size: 13px;
-    text-align: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    opacity: .6;
-    text-shadow: 0 0 2px rgba(0, 0, 0, .4);
-}
-
-.inputWrapper {
-    margin: 10px;
-    height: 50px;
-    overflow: hidden;
-    -webkit-transition: -webkit-transform .3s ease-out;
-    transition: transform .3s ease-out;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-}
-
-.inputWrapper.hidden {
-    margin: 0;
-    height: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-}
-
-.addTips {
-    display: block;
-    height: 0;
-    overflow: hidden;
-    line-height: 60px;
-    padding: 0 10px;
-    text-align: center;
-    font-size: 18px;
-    background: #fafdff;
-    text-shadow: 0 0 3px #fff;
-    color: #00c8ef;
-    -webkit-transition: -webkit-transform .3s ease-out;
-    transition: transform .3s ease-out;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-}
-
-.addTips.shown {
-    height: 60px;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-}
-
-#inputbox {
-    display: block;
-    margin: 0;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 9px;
-    font-size: 12px;
-    line-height: 12px;
-    border-radius: 3px;
-    border: 1px solid #aaa;
-}
-
-#inputbox:focus {
-    outline: none;
-    border-color: #c05b4d;
 }
 
 footer {
