@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>心理测试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style/main.css">
+</head>
+<body>
+    <section id="mtest"></section>
+    <footer>A Mental Test, powered by Tommy.</footer>
+</body>
+<script src="js/react.js"></script>
+<script src="js/JSXTransformer.js"></script>
+<script type="text/jsx">
+var TodoItem = React.createClass({
+  remove: function () {
+    this.props.remove.call(this, this.props.index);
+  },
+  render: function () {
+    // JSX中的Event名称和原生JS有所区别
+    // 参考http://facebook.github.io/react/docs/events.html
+    return (
+      <li style={{cursor:'pointer'}}>
+        <a>{this.props.content}</a>
+        <a className={'del'} onClick={this.remove}>删</a>
+      </li>
+    );
+  }
+});
+
+var TodoList = React.createClass({
+  getInitialState: function() {
+    var data = localStorage.getItem('tomToDo') || '';
+    if (data) {
+      var data = data.split('_ttd#');
+    } else {
+      data = [];
+    }
+    return {
+      data: data,
+      hideInput: true
+    };
+  },
+  add: function (content) {
+    this.state.data.push(content);
+    localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
+    this.setState({
+      data: this.state.data
+    });
+  },
+  remove: function (index) {
+    this.state.data.splice(index, 1);
+    localStorage.setItem('tomToDo', this.state.data.join('_ttd#'));
+    this.setState({
+      data: this.state.data
+    });
+  },
+  showInput: function () {
+    this.setState({
+      hideInput: false
+    });
+  },
+  hideInput: function () {
+    this.setState({
+      hideInput: true
+    });
+  },
+  render: function() {
+    var self = this;
+    var todoNodes = this.state.data.map(function (item, index) {
+      // 由于这里的上下文对象是state.data
+      // 而不是TodoList
+      // 所以要引用self
+      return (
+        <TodoItem content={item} remove={self.remove} index={index} />
+      );
+    });
+    var result;
+    if (this.state.data.length > 0) {
+      result = <ul>{todoNodes}</ul>;
+    } else {
+      result = <ul>
+                 <li style={{textAlign: 'center'}}>
+                   <a>您没有待办事项</a>
+                 </li>
+               </ul>;
+    }
+    return (
+      <div>
+        {result}
+        <TodoBox add={this.add}
+                 hidden={this.state.hideInput}
+                 hideInput={this.hideInput}
+                 showInput={this.showInput} />
+      </div>
+    );
+  }
+});
+
+var TodoBox = React.createClass({
+  add: function () {
+    var e = window.event;
+    // check if "enter" pressed
+    if (e.keyCode == 13 || e.which == 13 || e.type == 'blur') {
+      var text = document.getElementById('inputbox');
+      if (text.value.length > 0) {
+        this.props.add.call(this, text.value);
+        text.value = '';
+      } else {
+        this.props.hideInput.call(this, null);
+      }
+    }
+  },
+  showInput: function () {
+    document.getElementById('inputbox').focus();
+    this.props.showInput.call(this, null);
+  },
+  render: function () {
+    // use "a" tag for autofocus in mobile devices..
+    return (
+      <div>
+        <div className={this.props.hidden === true ? 'inputWrapper hidden' : 'inputWrapper'}>
+          <input className={'inputbox'}
+                 id={'inputbox'}
+                 placeholder={'请填写您的待办事项，按换行或回车结束'}
+                 onBlur={this.add}
+                 onKeyDown={this.add} />
+        </div>
+        <a onClick={this.showInput}
+           onTouchEnd={this.showInput}
+           className={this.props.hidden === true ? 'addTips shown' : 'addTips'}>
+          + 点击添加待办事项
+        </a>
+      </div>
+    );
+  }
+});
+
+React.render(<TodoList />, document.getElementById('todo-list'));
+</script>
+</html>

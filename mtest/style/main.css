@@ -1,0 +1,130 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: Microsoft YaHei, Verdana;
+}
+
+header {
+    background: #00d8ff;
+    border-bottom: 1px solid #00b8df;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 49px;
+    line-height: 49px;
+    font-size: 24px;
+}
+
+#todo-list {
+    padding-bottom: 30px;
+    margin: 0 auto;
+    max-width: 480px;
+}
+
+#todo-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#todo-list li {
+    padding: 0 10px;
+    background: #fafafa;
+    color: #c05b4d;
+    position: relative;
+    font-size: 20px;
+    line-height: 50px;
+}
+
+#todo-list li:nth-child(2n) {
+    background: #fff;
+}
+
+#todo-list li .del {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #00d8ff;
+    color: #fff;
+    line-height: 30px;
+    font-size: 13px;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    opacity: .6;
+    text-shadow: 0 0 2px rgba(0, 0, 0, .4);
+}
+
+.inputWrapper {
+    margin: 10px;
+    height: 50px;
+    overflow: hidden;
+    -webkit-transition: -webkit-transform .3s ease-out;
+    transition: transform .3s ease-out;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.inputWrapper.hidden {
+    margin: 0;
+    height: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+.addTips {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    line-height: 60px;
+    padding: 0 10px;
+    text-align: center;
+    font-size: 18px;
+    background: #fafdff;
+    text-shadow: 0 0 3px #fff;
+    color: #00c8ef;
+    -webkit-transition: -webkit-transform .3s ease-out;
+    transition: transform .3s ease-out;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+.addTips.shown {
+    height: 60px;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+#inputbox {
+    display: block;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 9px;
+    font-size: 12px;
+    line-height: 12px;
+    border-radius: 3px;
+    border: 1px solid #aaa;
+}
+
+#inputbox:focus {
+    outline: none;
+    border-color: #c05b4d;
+}
+
+footer {
+    background: #c05b4d;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    line-height: 20px;
+    padding: 5px 0;
+}
