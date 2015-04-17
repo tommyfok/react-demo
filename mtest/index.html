@@ -1,66 +1,138 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>心理测试</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="style/main.css">
+		<title>心理测试</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-    <section id="mtest"></section>
-    <footer>A Mental Test, powered by Tommy.</footer>
+		<section id="mtest"></section>
+		<footer>A Mental Test, powered by Tommy.</footer>
 </body>
-<script src="js/react.js"></script>
+<script src="js/react-with-addons.js"></script>
 <script src="js/JSXTransformer.js"></script>
 <script type="text/jsx">
-var data = [];
+var timer;
 
 var OptionItem = React.createClass({
-  render: function () {
-    return (
-      <div className={'option-item'} onClick={this.submit}>
-        <span className={'you'}>￥{this.props.uMoney}</span>
-        <span className={'computer'}>￥{this.props.cMoney}</span>
-      </div>
-    );
-  },
-  submit: function () {
-    this.props.submit(this.props.index);
-  }
+	render: function () {
+		return (
+			<div className={'option-item'} onClick={this.submit}>
+				<span className={'you'}>￥{this.props.uMoney}</span>
+				<span className={'computer'}>￥{this.props.cMoney}</span>
+			</div>
+		);
+	},
+	submit: function () {
+		this.props.submit(this.props.index);
+	}
 });
 
 var Options = React.createClass({
-  getInitialState: function () {
-      return {data: []};
-  },
-  componentDidMount: function () {
-    this.getData();
-  },
-  render: function () {
-    var itemData = this.state.data;
-    return (
-      <div className={'options'}>
-        <OptionItem uMoney={itemData[1]} cMoney={itemData[1]} submit={this.submit} index={0} />
-        <OptionItem uMoney={itemData[3]} cMoney={itemData[0]} submit={this.submit} index={1} />
-        <OptionItem uMoney={itemData[0]} cMoney={itemData[3]} submit={this.submit} index={2} />
-        <OptionItem uMoney={itemData[2]} cMoney={itemData[2]} submit={this.submit} index={3} />
-      </div>
-    );
-  },
-  getData: function () {
-    if (this.isMounted()) {
-      this.setState({
-        data: [
-          Math.ceil(Math.random() * 3) + 12,
-          Math.ceil(Math.random() * 3) + 8,
-          Math.ceil(Math.random() * 3) + 4,
-          Math.ceil(Math.random() * 3) + 1
-        ]
-      });
-    }
-  },
-  submit: function (index) {
-    console.log(index);
-  }
+	getInitialState: function () {
+		var obj = {
+			data: [],
+			answers: [],
+			countdown: -1
+		};
+		return obj;
+	},
+	render: function () {
+		var self = this;
+		var optionList = this.state.data.map(function (val, key) {
+			return (
+				<OptionItem uMoney={val.uMoney} cMoney={val.cMoney} index={key} submit={self.submit} />
+			);
+		});
+		var startBtnClass = React.addons.classSet({
+			'hidden': this.state.starttime,
+			'startBtn': true
+		});
+		var maskClass = React.addons.classSet({
+			'hidden': this.state.clickable || !this.state.starttime,
+			'mask': true
+		});
+		return (
+			<div>
+				<div className={'options'}>
+					<div className={maskClass}>{this.state.countdown - 6}</div>
+					<div className={startBtnClass} onClick={this.start}>点击开始</div>
+					{optionList}
+				</div>
+				<div style={{'text-align': 'right'}}>{this.state.answers.length}/30</div>
+			</div>
+		);
+	},
+	getData: function () {
+		var arr = [
+			Math.ceil(Math.random() * 3) + 12,
+			Math.ceil(Math.random() * 3) + 8,
+			Math.ceil(Math.random() * 3) + 4,
+			Math.ceil(Math.random() * 3) + 1
+		];
+		this.setState({
+			data: [
+				{uMoney: arr[1], cMoney: arr[1]},
+				{uMoney: arr[3], cMoney: arr[0]},
+				{uMoney: arr[0], cMoney: arr[3]},
+				{uMoney: arr[2], cMoney: arr[2]}
+			],
+			clickable: false,
+			countdown: 12
+		});
+	},
+	submit: function (index) {
+		if (this.state.clickable === true) {
+			this.state.answers.push({
+				group: this.state.data,
+				select: index
+			});
+			if (this.state.answers.length < 30) {
+				this.getData();
+			} else {
+				this.end();
+			}
+		}
+	},
+	end: function () {
+		clearTimeout(timer);
+		this.setState({
+			data: [],
+			answers: this.state.answers,
+			endtime: + new Date()
+		});
+	},
+	start: function () {
+		var self = this;
+		(function _oneSecond () {
+			self.state.countdown = self.state.countdown - 1 > 0 ? self.state.countdown - 1 : 0;
+			if (self.state.countdown === 0) {
+				self.setState({
+					countdown: 12
+				});
+				self.getData();
+			} else {
+				if (self.state.countdown < 7) {
+					self.setState({
+						clickable: true
+					});
+				} else {
+					self.setState({
+						clickable: false,
+						countdown: self.state.countdown
+					});
+				}
+			}
+			if (timer) {
+				clearTimeout(timer);
+			}
+			timer= setTimeout(_oneSecond, 1000);
+		})();
+		this.setState({
+			starttime: + new Date()
+		});
+		this.getData();
+	}
 });
 
 React.render(<Options />, document.getElementById('mtest'));
