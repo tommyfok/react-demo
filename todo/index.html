@@ -14,7 +14,7 @@
 <script type="text/jsx">
 var TodoItem = React.createClass({
   remove: function () {
-    this.props.remove.call(this, this.props.index);
+    this.props.remove(this.props.index);
   },
   render: function () {
     // JSX中的Event名称和原生JS有所区别
@@ -104,16 +104,16 @@ var TodoBox = React.createClass({
     if (e.keyCode == 13 || e.which == 13 || e.type == 'blur') {
       var text = document.getElementById('inputbox');
       if (text.value.length > 0) {
-        this.props.add.call(this, text.value);
+        this.props.add(text.value);
         text.value = '';
       } else {
-        this.props.hideInput.call(this, null);
+        this.props.hideInput();
       }
     }
   },
   showInput: function () {
     document.getElementById('inputbox').focus();
-    this.props.showInput.call(this, null);
+    this.props.showInput();
   },
   render: function () {
     // use "a" tag for autofocus in mobile devices..
